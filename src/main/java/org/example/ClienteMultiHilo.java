@@ -5,7 +5,8 @@ import java.util.Scanner;
 
 public class ClienteMultiHilo {
 
-    public static final String HOST = "192.168.137.213";
+    //TODO: Cambiar ip del host
+    public static final String HOST = "192.168.1.128";
     public static final int PUERTO = 5000;
 
     public static void main(String[] args) throws IOException, InterruptedException {
