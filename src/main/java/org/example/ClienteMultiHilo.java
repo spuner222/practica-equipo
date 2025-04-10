@@ -1,28 +1,35 @@
 package org.example;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.Scanner;
 
 public class ClienteMultiHilo {
 
-    static final int MAX_HILOS = 10;
     public static final String HOST = "192.168.137.213";
+    public static final int PUERTO = 5000;
 
     public static void main(String[] args) throws IOException, InterruptedException {
-        ArrayList<Thread> clients = new ArrayList<>();
+        Scanner scanner = new Scanner(System.in);
 
-        for (int i = 0; i < 5; i++) {
-            clients.add(new HiloClienteParlante(i));
+        System.out.print("Ingresa tu nombre: ");
+        String nombre = scanner.nextLine();
+
+        System.out.println("Conectando al servidor...");
+        HiloClienteParlante cliente = new HiloClienteParlante(nombre);
+        cliente.start();
+
+        System.out.println("Escribe tus mensajes (escribe 'salir' para terminar):");
+        String mensaje;
+        while (true) {
+            mensaje = scanner.nextLine();
+            cliente.enviarMensaje(mensaje);
+
+            if (mensaje.equalsIgnoreCase("salir")) {
+                break;
+            }
         }
 
-        for (Thread thread : clients) {
-            thread.start();
-        }
-
-        for (Thread thread : clients) {
-            thread.join();
-        }
-
-        System.out.println("Todos los clientes terminaron.");
+        cliente.desconectar();
+        System.out.println("Conexión terminada.");
     }
 }
